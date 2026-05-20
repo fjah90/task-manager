@@ -45,6 +45,7 @@ services:
       - api
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:4000/api
+      API_INTERNAL_URL: http://task-manager-api:4000/api
     ports:
       - "3000:3000"
 

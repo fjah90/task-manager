@@ -26,8 +26,12 @@ export class ApiError extends Error {
   }
 }
 
+// On the server (Next.js SSR/RSC inside Docker) use the internal service name.
+// On the browser use the public-facing URL.
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
+  typeof window === 'undefined'
+    ? (process.env.API_INTERNAL_URL ?? 'http://task-manager-api:4000/api')
+    : (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api');
 
 export async function apiFetch<T>(
   path: string,
