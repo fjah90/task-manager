@@ -53,7 +53,7 @@ export function TaskForm({ initial, submitting, onSubmit, onCancel }: Props) {
         <textarea
           id="description"
           rows={3}
-          className="rounded border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900"
+          className="rounded-lg border border-amber-200 bg-[var(--surface)] px-3 py-2 text-sm outline-none transition focus:border-teal-700 focus:ring-2 focus:ring-teal-100"
           {...register('description')}
         />
         {errors.description?.message && (
@@ -68,7 +68,7 @@ export function TaskForm({ initial, submitting, onSubmit, onCancel }: Props) {
         </label>
         <select
           id="status"
-          className="rounded border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+          className="rounded-lg border border-amber-200 bg-[var(--surface)] px-3 py-2 text-sm outline-none transition focus:border-teal-700 focus:ring-2 focus:ring-teal-100"
           {...register('status')}
         >
           <option value="pending">Pending</option>
@@ -81,7 +81,7 @@ export function TaskForm({ initial, submitting, onSubmit, onCancel }: Props) {
         error={errors.dueDate?.message}
         {...register('dueDate')}
       />
-      <div className="flex justify-end gap-2 pt-2">
+      <div className="flex justify-end gap-2 border-t border-amber-100 pt-3">
         {onCancel && (
           <Button type="button" variant="secondary" onClick={onCancel}>
             Cancel

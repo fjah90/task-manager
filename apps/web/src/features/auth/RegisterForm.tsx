@@ -45,13 +45,13 @@ export function RegisterForm() {
         {...register('password')}
       />
       {reg.isError && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
           {reg.error instanceof Error
             ? reg.error.message
             : 'Registration failed'}
         </p>
       )}
-      <Button type="submit" disabled={reg.isPending}>
+      <Button type="submit" disabled={reg.isPending} className="mt-1 w-full">
         {reg.isPending ? 'Creating account…' : 'Create account'}
       </Button>
     </form>

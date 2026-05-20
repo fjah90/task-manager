@@ -19,30 +19,30 @@ function formatDate(value: string | null): string {
 export function TaskCard({ task, onEdit, onDelete, onToggleStatus, busy }: Props) {
   const done = task.status === 'done';
   return (
-    <article className="flex flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+    <article className="panel-enter flex flex-col gap-3 rounded-2xl border border-amber-200/70 bg-[var(--surface)] p-4 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
       <header className="flex items-start justify-between gap-2">
         <h3
-          className={`text-base font-semibold ${
+          className={`text-base font-semibold tracking-tight ${
             done ? 'text-gray-400 line-through' : 'text-gray-900'
           }`}
         >
           {task.title}
         </h3>
         <span
-          className={`rounded-full px-2 py-0.5 text-xs ${
+          className={`rounded-full px-2 py-1 text-xs font-semibold uppercase tracking-wide ${
             done
-              ? 'bg-green-100 text-green-700'
-              : 'bg-amber-100 text-amber-700'
+              ? 'bg-teal-100 text-teal-800'
+              : 'bg-amber-100 text-amber-800'
           }`}
         >
           {task.status}
         </span>
       </header>
       {task.description && (
-        <p className="text-sm text-gray-600">{task.description}</p>
+        <p className="text-sm leading-relaxed text-gray-600">{task.description}</p>
       )}
-      <p className="text-xs text-gray-500">Due: {formatDate(task.dueDate)}</p>
-      <div className="mt-2 flex gap-2">
+      <p className="text-xs font-medium text-gray-500">Due: {formatDate(task.dueDate)}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
         <Button
           variant="secondary"
           onClick={() => onToggleStatus(task)}

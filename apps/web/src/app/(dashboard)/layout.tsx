@@ -39,13 +39,17 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-          <Link href="/tasks" className="text-lg font-semibold">
+      <header className="sticky top-0 z-20 border-b border-amber-200/70 bg-[var(--surface)]/85 backdrop-blur">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
+          <Link
+            href="/tasks"
+            className="text-lg font-semibold tracking-tight text-teal-900"
+          >
             Task Manager
           </Link>
           <Button
             variant="ghost"
+            className="text-teal-800 hover:bg-teal-100"
             onClick={() => {
               logout();
               router.replace('/login');
@@ -55,7 +59,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </Button>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6">
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8">
         {children}
       </main>
     </div>

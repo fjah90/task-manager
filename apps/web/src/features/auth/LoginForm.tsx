@@ -39,13 +39,13 @@ export function LoginForm() {
         {...register('password')}
       />
       {login.isError && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
           {login.error instanceof Error
             ? login.error.message
             : 'Login failed'}
         </p>
       )}
-      <Button type="submit" disabled={login.isPending}>
+      <Button type="submit" disabled={login.isPending} className="mt-1 w-full">
         {login.isPending ? 'Signing in…' : 'Sign in'}
       </Button>
     </form>

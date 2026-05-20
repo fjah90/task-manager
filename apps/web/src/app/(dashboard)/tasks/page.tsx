@@ -32,32 +32,34 @@ export default function TasksPage() {
   const totalPages = data ? Math.max(1, Math.ceil(data.total / data.limit)) : 1;
 
   return (
-    <section className="flex flex-col gap-4">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-semibold">My tasks</h1>
-        <div className="flex items-center gap-2">
-          <label htmlFor="filter" className="text-sm text-gray-600">
+    <section className="flex flex-col gap-5">
+      <header className="panel-enter rounded-2xl border border-amber-200/70 bg-[var(--surface)] p-4 shadow-[0_10px_24px_rgba(15,23,42,0.07)]">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">My tasks</h1>
+          <div className="flex items-center gap-2">
+            <label htmlFor="filter" className="text-sm text-gray-600">
             Filter:
-          </label>
-          <select
-            id="filter"
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value as StatusFilter);
-              setPage(1);
-            }}
-            className="rounded border border-gray-300 px-2 py-1 text-sm"
-          >
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="done">Done</option>
-          </select>
-          <Button onClick={() => setCreating(true)}>New task</Button>
+            </label>
+            <select
+              id="filter"
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value as StatusFilter);
+                setPage(1);
+              }}
+              className="rounded-lg border border-amber-200 bg-[var(--surface)] px-2 py-1 text-sm outline-none focus:border-teal-700"
+            >
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="done">Done</option>
+            </select>
+            <Button onClick={() => setCreating(true)}>New task</Button>
+          </div>
         </div>
       </header>
 
       {creating && (
-        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+        <div className="panel-enter rounded-2xl border border-amber-200/70 bg-[var(--surface)] p-4 shadow-[0_10px_24px_rgba(15,23,42,0.07)]">
           <h2 className="mb-3 text-lg font-semibold">Create task</h2>
           <TaskForm
             submitting={createTask.isPending}
@@ -72,7 +74,7 @@ export default function TasksPage() {
       )}
 
       {editing && (
-        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+        <div className="panel-enter rounded-2xl border border-amber-200/70 bg-[var(--surface)] p-4 shadow-[0_10px_24px_rgba(15,23,42,0.07)]">
           <h2 className="mb-3 text-lg font-semibold">Edit task</h2>
           <TaskForm
             initial={editing}
@@ -134,7 +136,7 @@ export default function TasksPage() {
           >
             Previous
           </Button>
-          <span className="text-gray-600">
+          <span className="rounded-full bg-[var(--surface)] px-3 py-1 text-gray-700">
             Page {data.page} of {totalPages}
           </span>
           <Button
