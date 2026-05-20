@@ -8,9 +8,12 @@ App full-stack para gestión de tareas con autenticación. Cada usuario sólo ac
 
 - **Backend:** NestJS 11 + TypeScript estricto + Prisma 6 + PostgreSQL 16 + JWT (bcrypt 10 rounds) + Zod 4.
 - **Frontend:** Next.js 16 (App Router, RSC) + React 19 + TypeScript + Tailwind v4 + TanStack Query 5 + React Hook Form 7 + Zod 4.
-- **Infra local:** Docker Compose (Postgres 16-alpine).
+- **UI:** Lucide React (iconos), Sonner (toast notifications), SweetAlert2 (confirm dialogs).
+- **Infra local:** Docker Compose (Postgres 16-alpine + API + Web).
 - **Monorepo:** pnpm workspaces.
 - **Tests:** Jest (api), Vitest + Testing Library (web).
+- **CI:** GitHub Actions (lint + test en push/PR).
+- **Docs API:** Swagger/OpenAPI (`/docs`).
 
 ## Estructura
 
@@ -42,6 +45,23 @@ apps/
 
 ## Cómo correr
 
+### Opción A — Docker Compose (recomendado)
+
+```bash
+# 1. Copiar envs
+cp apps/api/.env.example apps/api/.env
+
+# 2. Levantar todo (postgres + api + web)
+docker-compose up -d
+
+# 3. Aplicar migraciones
+docker exec task-manager-api sh -c "cd apps/api && npx prisma migrate deploy"
+
+# Abrir http://localhost:3000
+```
+
+### Opción B — Desarrollo local
+
 ```bash
 # 1. Instalar dependencias
 pnpm install
@@ -49,7 +69,7 @@ pnpm install
 # 2. Levantar Postgres
 pnpm db:up
 
-# 3. Configurar envs (copiar y ajustar)
+# 3. Configurar envs
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env.local
 
@@ -79,7 +99,7 @@ pnpm --filter web test     # sólo frontend (Vitest)
 | `JWT_SECRET`    | Secreto firma JWT                        |
 | `JWT_EXPIRES_IN`| Expiración (ej. `1d`)                    |
 | `PORT`          | Puerto Nest (default `4000`)             |
-| `CORS_ORIGIN`   | Origen permitido (frontend)              |
+| `CORS_ORIGIN`   | Orígenes permitidos, separados por coma  |
 
 `apps/web/.env.local`
 
@@ -120,15 +140,18 @@ Formato de error uniforme: `{ "error": { "code": "STRING_CODE", "message": "..."
 - **Prisma 6 en vez de 7.** Prisma 7 mueve la config del datasource a `prisma.config.ts`, fricción innecesaria para el alcance de la prueba.
 - **Paginación cursor-free.** `findMany` + `count` en `$transaction` simple. Suficiente para los volúmenes esperados.
 - **Estructura por features en el frontend.** `features/auth` y `features/tasks` agrupan hooks (TanStack Query) y componentes de presentación, separados de `components/` (primitivos reutilizables).
+- **Diseño mobile-first.** Dashboard tipo lista (inspirado en apps nativas de tareas) con layout centrado `max-w-lg`, toggle de status inline, acciones en hover y botón "+ Agregar tarea" al pie.
+- **Notificaciones.** Toasts con Sonner para feedback de operaciones CRUD; SweetAlert2 para confirmación de eliminación en lugar de `confirm()` nativo.
+- **CORS multi-origen.** `CORS_ORIGIN` soporta múltiples orígenes separados por coma, evitando hardcodear en el código.
 - **Cliente HTTP propio (`apiFetch`)** en lugar de Axios para reducir dependencias y mantener tipado estricto.
 
 ## Pendientes / fuera de alcance
 
 - Refresh token / cookie httpOnly.
 - Roles y permisos avanzados.
-- Internacionalización.
+- Internacionalización (actualmente solo español).
 - E2E con Playwright.
-- CI (GitHub Actions) — preparado para agregar `pnpm lint && pnpm test && pnpm build`.
+- Deploy en producción (Vercel / Railway).
 
 ## Uso de IA
 
