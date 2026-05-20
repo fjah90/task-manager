@@ -104,6 +104,13 @@ Todos bajo prefijo `/api`.
 
 Formato de error uniforme: `{ "error": { "code": "STRING_CODE", "message": "..." } }`.
 
+## Rutas de documentación
+
+- Frontend (app): `http://localhost:3000`
+- API base: `http://localhost:4000/api`
+- Swagger UI: `http://localhost:4000/docs`
+- OpenAPI JSON: `http://localhost:4000/docs-json`
+
 ## Decisiones técnicas
 
 - **Aislamiento por usuario en la capa de servicio.** `TasksService` siempre filtra por `userId` extraído del JWT (`@CurrentUser`). El acceso cruzado devuelve **404** (no 403) para evitar enumeración de recursos.

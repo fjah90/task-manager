@@ -1,6 +1,7 @@
 # AI Usage
 
-Durante esta prueba se utilizó **GitHub Copilot (Claude)** como asistente de pair-programming. Este documento resume cómo, dónde y bajo qué controles.
+Durante esta prueba se utilizó **GitHub Copilot (Claude 4.6, GPTCodex 5.3)** como asistente de pair-programming. Este documento resume cómo, dónde y bajo qué controles.
+**GitHub Copilot (Gemini 3.1)** En la documentación.
 
 ## Dónde aportó
 
