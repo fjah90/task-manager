@@ -56,11 +56,7 @@ export class TasksService {
     });
   }
 
-  async update(
-    userId: string,
-    id: string,
-    dto: UpdateTaskDto,
-  ): Promise<Task> {
+  async update(userId: string, id: string, dto: UpdateTaskDto): Promise<Task> {
     await this.findOne(userId, id);
     return this.prisma.task.update({
       where: { id },

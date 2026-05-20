@@ -47,10 +47,7 @@ export class TasksController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a single task by id' })
-  get(
-    @CurrentUser() user: AuthUser,
-    @Param('id') id: string,
-  ): Promise<Task> {
+  get(@CurrentUser() user: AuthUser, @Param('id') id: string): Promise<Task> {
     return this.tasks.findOne(user.id, id);
   }
 
