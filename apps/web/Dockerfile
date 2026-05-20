@@ -14,6 +14,9 @@ RUN pnpm install --frozen-lockfile --filter web...
 
 COPY apps/web apps/web
 
+ARG API_INTERNAL_URL=http://task-manager-api:4000/api
+ENV API_INTERNAL_URL=$API_INTERNAL_URL
+
 RUN pnpm --filter web build
 
 EXPOSE 3000
