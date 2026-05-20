@@ -9,9 +9,9 @@ App full-stack para gestión de tareas con autenticación. Cada usuario sólo ac
 - **Backend:** NestJS 11 + TypeScript estricto + Prisma 6 + PostgreSQL 16 + JWT (bcrypt 10 rounds) + Zod 4.
 - **Frontend:** Next.js 16 (App Router, RSC) + React 19 + TypeScript + Tailwind v4 + TanStack Query 5 + React Hook Form 7 + Zod 4.
 - **UI:** Lucide React (iconos), Sonner (toast notifications), SweetAlert2 (confirm dialogs).
-- **Infra local:** Docker Compose (Postgres 16-alpine + API + Web).
+- **Infra local:** Docker Compose (Postgres 16-alpine + API + Web + Nginx reverse proxy con SSL auto-firmado).
 - **Monorepo:** pnpm workspaces.
-- **Tests:** Jest (api), Vitest + Testing Library (web).
+- **Tests:** Jest (api), Vitest + Testing Library (web), Playwright (e2e).
 - **CI:** GitHub Actions (lint + test en push/PR).
 - **Docs API:** Swagger/OpenAPI (`/docs`).
 
@@ -28,13 +28,15 @@ apps/
 │       │   └── tasks/    # CRUD con aislamiento por userId
 │       └── prisma/       # PrismaService global
 └── web/   # Next.js
-    └── src/
-        ├── app/
-        │   ├── (auth)/      # /login, /register
-        │   └── (dashboard)/ # /tasks (protegida)
-        ├── components/      # UI primitivos (Button, Input)
-        ├── features/        # auth/, tasks/ (hooks + componentes)
-        └── lib/             # api-client, schemas Zod
+    ├── src/
+    │   ├── app/
+    │   │   ├── (auth)/      # /login, /register
+    │   │   └── (dashboard)/ # /tasks (protegida)
+    │   ├── components/      # UI primitivos (Button, Input)
+    │   ├── features/        # auth/, tasks/ (hooks + componentes)
+    │   └── lib/             # api-client, schemas Zod
+    └── e2e/                 # tests Playwright (fixtures + specs)
+nginx/                       # reverse proxy + SSL auto-firmado
 ```
 
 ## Requisitos
@@ -51,13 +53,15 @@ apps/
 # 1. Copiar envs
 cp apps/api/.env.example apps/api/.env
 
-# 2. Levantar todo (postgres + api + web)
+# 2. Levantar todo (postgres + api + web + nginx)
 docker-compose up -d
 
 # 3. Aplicar migraciones
 docker exec task-manager-api sh -c "cd apps/api && npx prisma migrate deploy"
 
-# Abrir http://localhost:3000
+# Abrir http://localhost:3000 (directo) o https://taskmanager.test (vía nginx)
+# Para usar el dominio local, añadir a /etc/hosts (o C:\Windows\System32\drivers\etc\hosts):
+#   127.0.0.1 taskmanager.test
 ```
 
 ### Opción B — Desarrollo local
@@ -107,6 +111,21 @@ pnpm --filter api test     # sólo backend (Jest)
 pnpm --filter web test     # sólo frontend (Vitest)
 ```
 
+### Tests E2E (Playwright)
+
+Requiere el stack Docker corriendo y el dominio `taskmanager.test` apuntando a `127.0.0.1`.
+
+```bash
+# 1. Levantar stack completo
+docker-compose up -d
+
+# 2. Ejecutar tests e2e
+cd apps/web
+npx playwright test
+```
+
+Los tests cubren: registro, login, logout, CRUD de tareas, filtros por status y flujo completo.
+
 ## Variables de entorno
 
 `apps/api/.env`
@@ -144,7 +163,7 @@ Formato de error uniforme: `{ "error": { "code": "STRING_CODE", "message": "..."
 
 ## Rutas de documentación
 
-- Frontend (app): `http://localhost:3000`
+- Frontend (app): `http://localhost:3000` (directo) / `https://taskmanager.test` (nginx)
 - API base: `http://localhost:4000/api`
 - Swagger UI: `http://localhost:4000/docs`
 - OpenAPI JSON: `http://localhost:4000/docs-json`
@@ -160,7 +179,8 @@ Formato de error uniforme: `{ "error": { "code": "STRING_CODE", "message": "..."
 - **Estructura por features en el frontend.** `features/auth` y `features/tasks` agrupan hooks (TanStack Query) y componentes de presentación, separados de `components/` (primitivos reutilizables).
 - **Diseño mobile-first.** Dashboard tipo lista (inspirado en apps nativas de tareas) con layout centrado `max-w-lg`, toggle de status inline, acciones en hover y botón "+ Agregar tarea" al pie.
 - **Notificaciones.** Toasts con Sonner para feedback de operaciones CRUD; SweetAlert2 para confirmación de eliminación en lugar de `confirm()` nativo.
-- **CORS multi-origen.** `CORS_ORIGIN` soporta múltiples orígenes separados por coma, evitando hardcodear en el código.
+- **Nginx como reverse proxy con SSL.** Contenedor Nginx que termina HTTPS con certificado auto-firmado (SAN: `taskmanager.test`, `localhost`, `127.0.0.1`), redirige HTTP→HTTPS y enruta `/api/**` al backend y `/**` al frontend. Permite tests e2e sobre HTTPS en un dominio local realista.
+- **CORS multi-origen.** `CORS_ORIGIN` soporta múltiples orígenes separados por coma, incluyendo `https://taskmanager.test` para el flujo vía nginx.
 - **Cliente HTTP propio (`apiFetch`)** en lugar de Axios para reducir dependencias y mantener tipado estricto.
 
 ## Pendientes / fuera de alcance
@@ -169,7 +189,6 @@ Formato de error uniforme: `{ "error": { "code": "STRING_CODE", "message": "..."
 - Roles y permisos avanzados.
 - Internacionalización (actualmente solo español).
 - Deploy en producción (Vercel / Railway).
-- CI (GitHub Actions) — preparado para agregar `pnpm lint && pnpm test && pnpm build`.
 
 ## Uso de IA
 
