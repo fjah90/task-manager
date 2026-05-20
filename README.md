@@ -81,6 +81,24 @@ pnpm dev:api   # http://localhost:4000  (prefijo /api)
 pnpm dev:web   # http://localhost:3000
 ```
 
+## Seed — usuario de prueba
+
+Para cargar un usuario de prueba con 3 tareas de ejemplo:
+
+```bash
+pnpm db:seed
+```
+
+> La base de datos debe estar corriendo (`pnpm db:up`) y las migraciones aplicadas antes de ejecutar el seed.
+> Si el usuario ya existe, el seed se omite sin error.
+
+Credenciales del usuario de prueba:
+
+| Campo    | Valor              |
+| -------- | ------------------ |
+| Email    | `test@example.com` |
+| Password | `Test1234!`        |
+
 ## Tests
 
 ```bash
@@ -150,8 +168,8 @@ Formato de error uniforme: `{ "error": { "code": "STRING_CODE", "message": "..."
 - Refresh token / cookie httpOnly.
 - Roles y permisos avanzados.
 - Internacionalización (actualmente solo español).
-- E2E con Playwright.
 - Deploy en producción (Vercel / Railway).
+- CI (GitHub Actions) — preparado para agregar `pnpm lint && pnpm test && pnpm build`.
 
 ## Uso de IA
 
