@@ -13,6 +13,9 @@
     "test": "pnpm -r test",
     "build": "pnpm -r build",
     "db:up": "docker compose up -d postgres",
-    "db:down": "docker compose down"
+    "db:down": "docker compose down",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f --tail=120"
   }
 }
