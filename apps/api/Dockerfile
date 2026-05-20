@@ -16,6 +16,7 @@ RUN pnpm install --frozen-lockfile --filter api...
 COPY apps/api apps/api
 
 RUN pnpm --filter api exec prisma generate
+RUN rm -f apps/api/tsconfig.build.tsbuildinfo && rm -rf apps/api/dist
 RUN pnpm --filter api build
 
 EXPOSE 4000
