@@ -12,14 +12,17 @@ Durante esta prueba se utilizó **GitHub Copilot (Claude 4.6, GPTCodex 5.3)** co
 - **Redacción técnica** de README y comentarios cortos cuando aportan valor.
 - **Diseño visual.** Extracción de paleta de colores a partir del logo (teal/charcoal), configuración de CSS custom properties y aplicación consistente en todos los componentes.
 - **Debugging Docker.** Diagnóstico de problemas de red en contenedores (binding `0.0.0.0`, CORS multi-origen, diferencia `localhost` vs `127.0.0.1`).
+- **Infraestructura Nginx + SSL.** Configuración del reverse proxy con certificado auto-firmado (SAN múltiple), `entrypoint.sh` para generación automática de certs y `openssl.cnf` para dominio local `taskmanager.test`.
+- **Tests E2E.** Scaffolding de Playwright con Page Object Model, fixtures de autenticación y suite de 23 tests cubriendo auth, CRUD, filtros y flujo completo.
 
 ## Dónde NO se delegó (decisiones humanas)
 
 - **Arquitectura de seguridad:** aislamiento por `userId` en `TasksService`, devolver 404 (no 403) para acceso cruzado, formato de error uniforme.
 - **Contrato del API** (paths, códigos, paginación) y decisión de mantener JWT en `localStorage` con el trade-off explícito.
 - **Selección de stack y versiones** (degradar de Prisma 7 → 6 por la incompatibilidad de config).
-- **Estrategia de tests:** qué cubrir primero (ownership en backend, validación + happy path de login en frontend).
+- **Estrategia de tests:** qué cubrir primero (ownership en backend, validación + happy path de login en frontend, escenarios críticos en e2e).
 - **Estructura del monorepo** (pnpm workspaces, separación `features/` vs `components/`).
+- **Arquitectura Docker:** decisión de agregar Nginx como reverse proxy con dominio local `taskmanager.test` para simular un entorno más realista y habilitar HTTPS en e2e.
 - **Identidad visual:** elección del logo, validación de la paleta y decisión del layout mobile-first.
 
 ## Controles aplicados
@@ -42,6 +45,7 @@ Durante esta prueba se utilizó **GitHub Copilot (Claude 4.6, GPTCodex 5.3)** co
 - **SVG del logo:** al pedirle que recreara el logo como SVG, generó un icono genérico que no se parecía en nada al original. Se descartó y se usó directamente el PNG real.
 - **CORS hardcodeado:** el primer approach hardcodeó orígenes en `main.ts` además de la variable de entorno, creando redundancia. Se refactorizó para leer únicamente de `CORS_ORIGIN` (comma-separated).
 - **Duplicación de función:** al agregar toasts, dejó una función `useDeleteTask` duplicada que rompió el build. Se detectó en el build de Docker y se eliminó.
+- **Aislamiento de caché en el frontend:** la IA implementó correctamente el aislamiento de datos en el backend (`where: { userId }`) pero pasó por alto que el `QueryClient` de TanStack Query persiste en memoria entre sesiones. Al cambiar de usuario sin recargar la página, se mostraban las tareas del usuario anterior porque el caché seguía vigente (`staleTime: 30s`). Detectado en prueba funcional manual. Corregido llamando `queryClient.clear()` en `useLogin`, `useRegister` y en el nuevo hook `useLogout` antes de navegar.
 
 ## Resultado
 

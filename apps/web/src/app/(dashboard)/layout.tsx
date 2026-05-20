@@ -6,7 +6,7 @@ import { useEffect, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LogOut } from 'lucide-react';
-import { logout } from '@/features/auth/hooks';
+import { useLogout } from '@/features/auth/hooks';
 import { tokenStorage } from '@/lib/api-client';
 import { Button } from '@/components/Button';
 
@@ -26,6 +26,7 @@ function useAuthToken(): string | null | undefined {
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const token = useAuthToken();
+  const logout = useLogout();
 
   useEffect(() => {
     if (token === null) router.replace('/login');

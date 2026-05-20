@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { apiFetch, tokenStorage } from '@/lib/api-client';
@@ -12,6 +12,7 @@ import type {
 
 export function useLogin() {
   const router = useRouter();
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: LoginInput) =>
       apiFetch<AuthResult>('/auth/login', {
@@ -19,6 +20,7 @@ export function useLogin() {
         body: JSON.stringify(input),
       }),
     onSuccess: (data) => {
+      qc.clear();
       tokenStorage.set(data.token);
       toast.success('Sesión iniciada');
       router.replace('/tasks');
@@ -29,6 +31,7 @@ export function useLogin() {
 
 export function useRegister() {
   const router = useRouter();
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: RegisterInput) =>
       apiFetch<AuthResult>('/auth/register', {
@@ -36,6 +39,7 @@ export function useRegister() {
         body: JSON.stringify(input),
       }),
     onSuccess: (data) => {
+      qc.clear();
       tokenStorage.set(data.token);
       toast.success('Cuenta creada. ¡Bienvenido!');
       router.replace('/tasks');
@@ -44,6 +48,10 @@ export function useRegister() {
   });
 }
 
-export function logout(): void {
-  tokenStorage.clear();
+export function useLogout() {
+  const qc = useQueryClient();
+  return () => {
+    tokenStorage.clear();
+    qc.clear();
+  };
 }
