@@ -5,6 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { apiFetch } from '@/lib/api-client';
 import type {
   PaginatedTasks,
@@ -50,7 +51,11 @@ export function useCreateTask() {
         method: 'POST',
         body: JSON.stringify(toPayload(input)),
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['tasks'] });
+      toast.success('Tarea creada');
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 }
 
@@ -62,7 +67,24 @@ export function useUpdateTask() {
         method: 'PUT',
         body: JSON.stringify(toPayload(input)),
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['tasks'] });
+      toast.success('Tarea actualizada');
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+}
+
+export function useDeleteTask() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiFetch<void>(`/tasks/${id}`, { method: 'DELETE' }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['tasks'] });
+      toast.success('Tarea eliminada');
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 }
 
@@ -74,15 +96,10 @@ export function useToggleStatus() {
         method: 'PUT',
         body: JSON.stringify({ status }),
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
-  });
-}
-
-export function useDeleteTask() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) =>
-      apiFetch<{ id: string }>(`/tasks/${id}`, { method: 'DELETE' }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
+    onSuccess: (_data, vars) => {
+      qc.invalidateQueries({ queryKey: ['tasks'] });
+      toast.success(vars.status === 'done' ? 'Tarea completada ✓' : 'Tarea marcada como pendiente');
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 }

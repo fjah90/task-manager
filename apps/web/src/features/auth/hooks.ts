@@ -2,6 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { apiFetch, tokenStorage } from '@/lib/api-client';
 import type {
   AuthResult,
@@ -19,8 +20,10 @@ export function useLogin() {
       }),
     onSuccess: (data) => {
       tokenStorage.set(data.token);
+      toast.success('Sesión iniciada');
       router.replace('/tasks');
     },
+    onError: (e: Error) => toast.error(e.message),
   });
 }
 
@@ -34,8 +37,10 @@ export function useRegister() {
       }),
     onSuccess: (data) => {
       tokenStorage.set(data.token);
+      toast.success('Cuenta creada. ¡Bienvenido!');
       router.replace('/tasks');
     },
+    onError: (e: Error) => toast.error(e.message),
   });
 }
 
