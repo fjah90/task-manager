@@ -6,6 +6,7 @@ import { RegisterSchema, type RegisterInput } from '@/lib/schemas';
 import { useRegister } from '@/features/auth/hooks';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { getAuthErrorMessage } from '@/lib/auth-error-message';
 
 export function RegisterForm() {
   const {
@@ -46,9 +47,7 @@ export function RegisterForm() {
       />
       {reg.isError && (
         <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
-          {reg.error instanceof Error
-            ? reg.error.message
-            : 'Registration failed'}
+          {getAuthErrorMessage(reg.error)}
         </p>
       )}
       <Button type="submit" disabled={reg.isPending} className="mt-1 w-full">
