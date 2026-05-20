@@ -45,8 +45,9 @@ test.describe('Task Manager E2E', () => {
     await expect(page.locator('.swal2-popup')).toBeVisible({ timeout: 5_000 });
     await page.locator('.swal2-confirm').click();
 
-    // Task gone
-    await expect(page.getByText('Tarea de prueba E2E')).not.toBeVisible({ timeout: 10_000 });
+    // Wait for dialog to close, then task gone from list
+    await expect(page.locator('.swal2-popup')).not.toBeVisible({ timeout: 5_000 });
+    await expect(page.locator('li').filter({ hasText: 'Tarea de prueba E2E' })).not.toBeVisible({ timeout: 10_000 });
 
     // ── Logout ──
     await page.getByRole('button', { name: /salir/i }).click();
