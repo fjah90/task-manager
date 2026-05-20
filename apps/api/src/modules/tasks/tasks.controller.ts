@@ -11,6 +11,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CurrentUser,
   type AuthUser,
@@ -28,12 +29,15 @@ import {
 import { TasksService, type PaginatedTasks } from './tasks.service';
 import type { Task } from '@prisma/client';
 
+@ApiTags('tasks')
+@ApiBearerAuth()
 @Controller('tasks')
 @UseGuards(JwtAuthGuard)
 export class TasksController {
   constructor(private readonly tasks: TasksService) {}
 
   @Get()
+  @ApiOperation({ summary: 'List tasks (paginated, filterable by status)' })
   list(
     @CurrentUser() user: AuthUser,
     @Query(new ZodValidationPipe(ListTasksQuerySchema)) query: ListTasksQuery,
@@ -42,6 +46,7 @@ export class TasksController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a single task by id' })
   get(
     @CurrentUser() user: AuthUser,
     @Param('id') id: string,
@@ -50,6 +55,7 @@ export class TasksController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create a new task' })
   create(
     @CurrentUser() user: AuthUser,
     @Body(new ZodValidationPipe(CreateTaskSchema)) dto: CreateTaskDto,
@@ -58,6 +64,7 @@ export class TasksController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update a task (partial)' })
   update(
     @CurrentUser() user: AuthUser,
     @Param('id') id: string,
@@ -68,6 +75,7 @@ export class TasksController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Delete a task' })
   remove(
     @CurrentUser() user: AuthUser,
     @Param('id') id: string,
