@@ -26,7 +26,7 @@ export function RegisterForm() {
       noValidate
     >
       <Input
-        label="Name"
+        label="Nombre"
         autoComplete="name"
         error={errors.name?.message}
         {...register('name')}
@@ -39,19 +39,19 @@ export function RegisterForm() {
         {...register('email')}
       />
       <Input
-        label="Password"
+        label="Contraseña"
         type="password"
         autoComplete="new-password"
         error={errors.password?.message}
         {...register('password')}
       />
       {reg.isError && (
-        <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="rounded-lg px-3 py-2 text-sm" style={{ background: 'rgba(220,38,38,0.06)', color: 'var(--danger)' }}>
           {getAuthErrorMessage(reg.error)}
         </p>
       )}
       <Button type="submit" disabled={reg.isPending} className="mt-1 w-full">
-        {reg.isPending ? 'Creating account…' : 'Create account'}
+        {reg.isPending ? 'Creando cuenta…' : 'Crear cuenta'}
       </Button>
     </form>
   );
