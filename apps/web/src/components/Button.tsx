@@ -9,13 +9,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANT_CLASS: Record<Variant, string> = {
   primary:
-    'bg-[var(--brand)] text-white shadow-[0_10px_22px_rgba(15,118,110,0.26)] hover:bg-[var(--brand-strong)] disabled:opacity-50',
+    'bg-[var(--brand)] text-white shadow-[0_8px_20px_var(--brand-glow)] hover:bg-[var(--brand-dark)] disabled:opacity-50',
   secondary:
-    'bg-[var(--surface)] text-gray-900 border border-amber-200 hover:bg-[var(--surface-strong)] disabled:opacity-50',
+    'bg-[var(--surface)] text-[var(--foreground)] border border-[var(--border-strong)] hover:bg-[var(--surface-alt)] disabled:opacity-50',
   danger:
-    'bg-[var(--danger)] text-white hover:bg-red-800 disabled:opacity-50',
+    'bg-[var(--danger)] text-white hover:bg-red-700 disabled:opacity-50',
   ghost:
-    'bg-transparent text-gray-700 hover:bg-amber-100 disabled:opacity-50',
+    'bg-transparent text-[var(--charcoal)] hover:bg-[var(--brand-muted)] disabled:opacity-50',
 };
 
 export function Button({
@@ -26,7 +26,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`rounded-lg px-3 py-2 text-sm font-semibold transition duration-200 hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-700/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent motion-reduce:transform-none motion-reduce:transition-none ${VARIANT_CLASS[variant]} ${className}`}
+      className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition duration-200 hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:cursor-not-allowed motion-reduce:transform-none motion-reduce:transition-none ${VARIANT_CLASS[variant]} ${className}`}
       {...rest}
     >
       {children}

@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { Save, Plus, X } from 'lucide-react';
 import { TaskFormSchema, type Task, type TaskFormInput } from '@/lib/schemas';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -39,21 +40,22 @@ export function TaskForm({ initial, submitting, onSubmit, onCancel }: Props) {
       noValidate
     >
       <Input
-        label="Title"
+        label="Título"
         error={errors.title?.message}
         {...register('title')}
       />
       <div className="flex flex-col gap-1">
         <label
           htmlFor="description"
-          className="text-sm font-medium text-gray-700"
+          className="text-sm font-medium"
+          style={{ color: 'var(--charcoal)' }}
         >
-          Description
+          Descripción
         </label>
         <textarea
           id="description"
           rows={3}
-          className="rounded-lg border border-amber-200 bg-[var(--surface)] px-3 py-2 text-sm outline-none transition focus:border-teal-700 focus:ring-2 focus:ring-teal-100"
+          className="rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm outline-none transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand-muted)]"
           {...register('description')}
         />
         {errors.description?.message && (
@@ -63,32 +65,33 @@ export function TaskForm({ initial, submitting, onSubmit, onCancel }: Props) {
         )}
       </div>
       <div className="flex flex-col gap-1">
-        <label htmlFor="status" className="text-sm font-medium text-gray-700">
-          Status
+        <label htmlFor="status" className="text-sm font-medium" style={{ color: 'var(--charcoal)' }}>
+          Estado
         </label>
         <select
           id="status"
-          className="rounded-lg border border-amber-200 bg-[var(--surface)] px-3 py-2 text-sm outline-none transition focus:border-teal-700 focus:ring-2 focus:ring-teal-100"
+          className="rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm outline-none transition focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand-muted)]"
           {...register('status')}
         >
-          <option value="pending">Pending</option>
-          <option value="done">Done</option>
+          <option value="pending">Pendiente</option>
+          <option value="done">Completada</option>
         </select>
       </div>
       <Input
-        label="Due date"
+        label="Fecha de vencimiento"
         type="date"
         error={errors.dueDate?.message}
         {...register('dueDate')}
       />
-      <div className="flex justify-end gap-2 border-t border-amber-100 pt-3">
+      <div className="flex justify-end gap-2 border-t border-[var(--border)] pt-3">
         {onCancel && (
-          <Button type="button" variant="secondary" onClick={onCancel}>
-            Cancel
+          <Button type="button" variant="secondary" onClick={onCancel} className="flex items-center gap-1.5">
+            <X size={14} />
+            Cancelar
           </Button>
         )}
-        <Button type="submit" disabled={submitting}>
-          {submitting ? 'Saving…' : initial ? 'Save changes' : 'Create task'}
+        <Button type="submit" disabled={submitting} className="flex items-center gap-1.5">
+          {submitting ? 'Guardando…' : initial ? <><Save size={14} /> Guardar cambios</> : <><Plus size={14} /> Crear tarea</>}
         </Button>
       </div>
     </form>

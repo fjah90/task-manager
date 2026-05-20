@@ -21,4 +21,4 @@ EXPOSE 3000
 ENV HOSTNAME="0.0.0.0"
 ENV PORT="3000"
 
-CMD ["pnpm", "--filter", "web", "start"]
+CMD ["sh", "-c", "cd apps/web && node_modules/.bin/next start -H 0.0.0.0 -p 3000"]
