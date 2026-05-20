@@ -103,7 +103,7 @@ export default function TasksPage() {
         <p className="text-sm text-gray-500">No tasks yet.</p>
       )}
 
-      <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         {data?.items.map((task) => (
           <TaskCard
             key={task.id}

@@ -26,7 +26,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`rounded-lg px-3 py-2 text-sm font-semibold transition duration-200 hover:-translate-y-px ${VARIANT_CLASS[variant]} ${className}`}
+      className={`rounded-lg px-3 py-2 text-sm font-semibold transition duration-200 hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-700/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent motion-reduce:transform-none motion-reduce:transition-none ${VARIANT_CLASS[variant]} ${className}`}
       {...rest}
     >
       {children}

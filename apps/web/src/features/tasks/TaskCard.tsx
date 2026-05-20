@@ -19,7 +19,7 @@ function formatDate(value: string | null): string {
 export function TaskCard({ task, onEdit, onDelete, onToggleStatus, busy }: Props) {
   const done = task.status === 'done';
   return (
-    <article className="panel-enter flex flex-col gap-3 rounded-2xl border border-amber-200/70 bg-[var(--surface)] p-4 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
+    <article className="panel-enter motion-reduce:animate-none [content-visibility:auto] [contain-intrinsic-size:260px] flex flex-col gap-3 rounded-2xl border border-amber-200/70 bg-[var(--surface)] p-4 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
       <header className="flex items-start justify-between gap-2">
         <h3
           className={`text-base font-semibold tracking-tight ${
