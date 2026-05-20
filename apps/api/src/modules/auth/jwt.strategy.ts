@@ -2,7 +2,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import type { AuthUser } from '../../common/decorators/current-user.decorator';
+import type { AuthUser } from '@/common/decorators/current-user.decorator';
 
 interface JwtPayload {
   sub: string;

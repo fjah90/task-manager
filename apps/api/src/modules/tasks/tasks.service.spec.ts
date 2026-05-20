@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import type { PrismaService } from '../../prisma/prisma.service';
+import type { PrismaService } from '@/prisma/prisma.service';
 
 describe('TasksService — ownership guard', () => {
   const OWNER_ID = 'user-owner';

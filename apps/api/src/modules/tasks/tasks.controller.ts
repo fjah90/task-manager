@@ -15,9 +15,9 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CurrentUser,
   type AuthUser,
-} from '../../common/decorators/current-user.decorator';
-import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+} from '@/common/decorators/current-user.decorator';
+import { ZodValidationPipe } from '@/common/pipes/zod-validation.pipe';
+import { JwtAuthGuard } from '@/modules/auth/jwt-auth.guard';
 import {
   CreateTaskSchema,
   ListTasksQuerySchema,
