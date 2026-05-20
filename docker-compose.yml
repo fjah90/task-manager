@@ -31,7 +31,7 @@ services:
       JWT_SECRET: change-me-in-production
       JWT_EXPIRES_IN: 1d
       PORT: 4000
-      CORS_ORIGIN: "http://localhost:3000,http://127.0.0.1:3000"
+      CORS_ORIGIN: "http://localhost:3000,http://127.0.0.1:3000,https://taskmanager.test"
     ports:
       - "4000:4000"
 
@@ -44,10 +44,23 @@ services:
     depends_on:
       - api
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:4000/api
-      API_INTERNAL_URL: http://task-manager-api:4000/api
+      API_INTERNAL_URL: http://api:4000/api
     ports:
       - "3000:3000"
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: task-manager-nginx
+    restart: unless-stopped
+    depends_on:
+      - api
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/certs:/etc/nginx/certs
 
 volumes:
   postgres_data:

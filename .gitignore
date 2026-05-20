@@ -37,3 +37,6 @@ apps/api/tsconfig.build.tsbuildinfo
 # Tests
 .playwright/
 test-results/
+
+# SSL certs (generated locally)
+nginx/certs/
