@@ -29,6 +29,10 @@ Thumbs.db
 
 # Prisma
 apps/api/prisma/migrations/dev_*/
+apps/api/prisma/seed.js
+apps/api/prisma/seed.js.map
+apps/api/prisma/seed.d.ts
+apps/api/tsconfig.build.tsbuildinfo
 
 # Tests
 .playwright/
