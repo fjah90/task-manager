@@ -10,6 +10,8 @@ export default defineConfig({
     setupFiles: ['./tests/setup.ts'],
     css: false,
     pool: 'threads',
+    // Exclude Playwright e2e specs — those run via `npx playwright test`, not Vitest
+    exclude: ['**/node_modules/**', '**/e2e/**'],
   },
   resolve: {
     alias: {

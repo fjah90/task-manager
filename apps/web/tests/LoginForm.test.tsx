@@ -26,7 +26,7 @@ describe('LoginForm', () => {
     render(<LoginForm />, { wrapper });
 
     await user.type(screen.getByLabelText(/email/i), 'not-an-email');
-    await user.click(screen.getByRole('button', { name: /sign in/i }));
+    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }));
 
     expect(await screen.findByText(/invalid email/i)).toBeInTheDocument();
     expect(screen.getByText(/password is required/i)).toBeInTheDocument();
@@ -48,8 +48,8 @@ describe('LoginForm', () => {
     render(<LoginForm />, { wrapper });
 
     await user.type(screen.getByLabelText(/email/i), 'a@b.com');
-    await user.type(screen.getByLabelText(/password/i), 'password123');
-    await user.click(screen.getByRole('button', { name: /sign in/i }));
+    await user.type(screen.getByLabelText(/contraseña/i), 'password123');
+    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }));
 
     await vi.waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
